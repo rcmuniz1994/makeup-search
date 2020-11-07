@@ -1,4 +1,6 @@
 import React from 'react';
+import Container from 'react-bootstrap/Container';
+import ProductsTable from './components/ProductsTable';
 import './App.css';
 
 function App() {
@@ -12,13 +14,9 @@ function App() {
   console.log(products);
 
   return (
-    <div className="App">
-      <ul>
-        {products.map(product => (
-          <li key={product.id}>{product.name}</li>
-        ))}
-      </ul>
-    </div>
+    <Container>
+      <ProductsTable products={products}/>
+    </Container>
   );
 }
 
