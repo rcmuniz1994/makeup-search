@@ -1,8 +1,15 @@
 import React from 'react';
 import Table from 'react-bootstrap/Table';
+import Loader from './Loader/Loader';
 
 const ProductsTable = (props) => {
-  const { products } = props;
+  const { products, loading } = props;
+
+  if (loading) {
+    return (
+      <Loader />
+    );
+  }
   
   return (
     <Table striped bordered hover>

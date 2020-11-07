@@ -5,17 +5,24 @@ import './App.css';
 
 function App() {
   const [products, setProducts] = React.useState([]);
+  const [loading, setLoading] = React.useState(false);
 
   React.useEffect(() => {
+    setLoading(true);
     fetch("http://makeup-api.herokuapp.com/api/v1/products.json?brand=maybelline")
       .then(response => response.json())
-      .then(products => setProducts(products));
-  },[]);
-  console.log(products);
+      .then(products => {
+        setProducts(products);
+        setLoading(false);
+      });
+  },[setProducts, setLoading]);
 
   return (
     <Container>
-      <ProductsTable products={products}/>
+      <ProductsTable
+        products={products}
+        loading={loading}
+      />
     </Container>
   );
 }
