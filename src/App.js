@@ -11,6 +11,7 @@ function App() {
   const [products, setProducts] = useState([]);
   const [productType, setProductType] = useState("");
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(false);
 
   useEffect(() => {
     setLoading(true);
@@ -18,6 +19,11 @@ function App() {
       .then(response => response.json())
       .then(products => {
         setProducts(products);
+        setLoading(false);
+        setError(false);
+      })
+      .catch(() => {
+        setError(true);
         setLoading(false);
       });
   },[setProducts, setLoading, productType]);
@@ -46,6 +52,7 @@ function App() {
       <ProductsTable
         products={products}
         loading={loading}
+        error={error}
       />
     </Container>
   );

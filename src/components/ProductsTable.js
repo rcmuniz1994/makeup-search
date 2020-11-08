@@ -1,13 +1,22 @@
 import React from 'react';
 import Table from 'react-bootstrap/Table';
 import Loader from './Loader/Loader';
+import Alert from 'react-bootstrap/Alert';
 
 const ProductsTable = (props) => {
-  const { products, loading } = props;
+  const { products, loading, error } = props;
 
   if (loading) {
     return (
       <Loader />
+    );
+  }
+
+  if (error) {
+    return (
+      <Alert variant="danger">
+        Erro aos buscar os dados. Por favor, recarregue a página e tenta novamente.
+      </Alert>
     );
   }
   
