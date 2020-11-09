@@ -22,7 +22,7 @@ const ProductsTable = (props) => {
             <tr key={id}>
               <td>{name}</td>
               <td>{brand}</td>
-              <td>{price}</td>
+              <td>{`$ ${price}`}</td>
               <td>{product_type}</td>
             </tr>
           );

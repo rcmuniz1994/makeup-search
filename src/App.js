@@ -64,8 +64,6 @@ function App() {
     }
   }
 
-  console.log("products: ", filteredProducts);
-
   return (
     <Container>
       <Row>

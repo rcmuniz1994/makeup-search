@@ -1,6 +1,6 @@
 import ProductsTable from './ProductsTable';
 import Filters from './Filters';
-import { Col, Alert, Row, Pagination } from 'react-bootstrap';
+import { Col, Alert, Row } from 'react-bootstrap';
 import Loader from './Loader/Loader';
 import Paginator from './Paginator';
 
