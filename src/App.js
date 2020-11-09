@@ -23,11 +23,20 @@ function App() {
     if (productType.length < 2) {
       return
     }
+    const url = selectedBrand
+      ? `http://makeup-api.herokuapp.com/api/v1/products.json?product_type=${productType}&brand=${selectedBrand}`
+      : `http://makeup-api.herokuapp.com/api/v1/products.json?product_type=${productType}`
     setLoading(true);
-    fetch(`http://makeup-api.herokuapp.com/api/v1/products.json?product_type=${productType}`)
+    fetch(url)
       .then(response => response.json())
       .then(products => {
-        const brands = products.map(product => product.brand);
+        const brands = products.reduce((brands, product) => {
+          if (!brands.includes(product.brand)) {
+            brands = [...brands, product.brand];
+          }
+
+          return brands;
+        }, []);
         const prods = chunk(products, 10);
         setBrands(brands);
         setProducts(prods);
@@ -39,7 +48,7 @@ function App() {
         setError(true);
         setLoading(false);
       });
-  },[productType]);
+  },[productType, selectedBrand]);
 
   const handleChange = (event) => {
     setProductType(event.target.value);
@@ -49,12 +58,10 @@ function App() {
     const brand = event;
     setSelectedBrand(brand);
     if (!brand) {
-      setFilteredProducts(products);
+      setFilteredProducts(products[0]);
 
       return
     }
-    const filteredProducts = products.filter(product => product.brand === brand);
-    setFilteredProducts(filteredProducts);
   }
 
   console.log("products: ", filteredProducts);

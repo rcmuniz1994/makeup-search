@@ -2,6 +2,7 @@ import ProductsTable from './ProductsTable';
 import Filters from './Filters';
 import { Col, Alert, Row, Pagination } from 'react-bootstrap';
 import Loader from './Loader/Loader';
+import Paginator from './Paginator';
 
 const SearchResult = (props) => {
   const {
@@ -18,16 +19,6 @@ const SearchResult = (props) => {
     loading,
     error
   } = props;
-
-  const next = () => {
-    setPageIndex(pageIndex + 1);
-    setFilteredProducts(products[pageIndex + 1]);
-  }
-
-  const previous = () => {
-    setPageIndex(pageIndex - 1);
-    setFilteredProducts(products[pageIndex - 1]);
-  }
 
   if (loading) {
     return (
@@ -70,26 +61,16 @@ const SearchResult = (props) => {
           />
         </Col>
         <Col lg="9">
+          <Paginator
+            pageIndex={pageIndex}
+            numberOfPages={numberOfPages}
+            setPageIndex={setPageIndex}
+            setFilteredProducts={setFilteredProducts}
+            products={products}
+          />
           <ProductsTable
             products={filteredProducts}
           />
-        </Col>
-      </Row>
-      <Row>
-        <Col>
-          <span>{`${pageIndex+1} de ${numberOfPages}`}</span>
-        </Col>
-        <Col>
-          <Pagination>
-            <Pagination.Prev
-              onClick={previous}
-              disabled={pageIndex === 0}
-            />
-            <Pagination.Next
-              onClick={next}
-              disabled={pageIndex === numberOfPages - 1}
-            />
-          </Pagination>
         </Col>
       </Row>
     </>
