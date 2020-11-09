@@ -7,6 +7,7 @@ import SearchIcon from '@material-ui/icons/Search';
 import './App.css';
 import { Row, Col, Alert } from 'react-bootstrap';
 import SearchResult from './components/SearchResult';
+import chunk from 'lodash.chunk';
 
 function App() {
   const [products, setProducts] = useState([]);
@@ -16,16 +17,21 @@ function App() {
   const [error, setError] = useState(false);
   const [brands, setBrands] = useState([]);
   const [selectedBrand, setSelectedBrand] = useState("");
+  const [pageIndex, setPageIndex] = useState(0);
 
   useEffect(() => {
+    if (productType.length < 2) {
+      return
+    }
     setLoading(true);
     fetch(`http://makeup-api.herokuapp.com/api/v1/products.json?product_type=${productType}`)
       .then(response => response.json())
       .then(products => {
         const brands = products.map(product => product.brand);
+        const prods = chunk(products, 10);
         setBrands(brands);
-        setProducts(products);
-        setFilteredProducts(products);
+        setProducts(prods);
+        setFilteredProducts(prods[0] || []);
         setLoading(false);
         setError(false);
       })
@@ -33,7 +39,7 @@ function App() {
         setError(true);
         setLoading(false);
       });
-  },[setProducts, setLoading, productType]);
+  },[productType]);
 
   const handleChange = (event) => {
     setProductType(event.target.value);
@@ -50,6 +56,8 @@ function App() {
     const filteredProducts = products.filter(product => product.brand === brand);
     setFilteredProducts(filteredProducts);
   }
+
+  console.log("products: ", filteredProducts);
 
   return (
     <Container>
@@ -76,25 +84,31 @@ function App() {
           </InputGroup>
         </Col>
       </Row>
-      <Row>
         {productType.length < 2 ? (
-          <Col>
-            <Alert variant="secondary">
-              Please, insert the makeup type that you're looking for.
-            </Alert>
-          </Col>
+          <Row>
+            <Col>
+              <Alert variant="secondary">
+                Please, insert the makeup type that you're looking for.
+              </Alert>
+            </Col>
+          </Row>
         ) : (
           <SearchResult
             brands={brands}
             selectedBrand={selectedBrand}
             handleOnSelectBrand={handleOnSelectBrand}
-            products={filteredProducts}
+            products={products}
+            filteredProducts={filteredProducts}
+            setFilteredProducts={setFilteredProducts}
             productType={productType}
+            pageIndex={pageIndex}
+            setPageIndex={setPageIndex}
+            numberOfPages={products.length}
             loading={loading}
             error={error}
           />
         )}
-      </Row>
+      
     </Container>
   );
 }
