@@ -1,13 +1,18 @@
 import { useEffect, useState } from 'react';
-import Container from 'react-bootstrap/Container';
-import InputGroup from 'react-bootstrap/InputGroup';
-import FormControl from 'react-bootstrap/FormControl';
-import Title from './components/Title';
 import SearchIcon from '@material-ui/icons/Search';
-import './App.css';
-import { Row, Col, Alert } from 'react-bootstrap';
-import SearchResult from './components/SearchResult';
 import chunk from 'lodash.chunk';
+import {
+  Alert,
+  Col,
+  Container,
+  FormControl,
+  InputGroup,
+  Row
+} from 'react-bootstrap';
+
+import Title from './components/Title';
+import SearchResult from './components/SearchResult';
+import { hasSearchTextMinimalLength } from './utils/utils';
 
 function App() {
   const [products, setProducts] = useState([]);
@@ -20,7 +25,7 @@ function App() {
   const [pageIndex, setPageIndex] = useState(0);
 
   useEffect(() => {
-    if (productType.length < 2) {
+    if (hasSearchTextMinimalLength(productType)) {
       return
     }
     const url = selectedBrand
@@ -89,7 +94,7 @@ function App() {
           </InputGroup>
         </Col>
       </Row>
-        {productType.length < 2 ? (
+        {hasSearchTextMinimalLength(productType) ? (
           <Row>
             <Col>
               <Alert variant="secondary">
