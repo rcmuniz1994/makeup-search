@@ -1,6 +1,9 @@
+import React from 'react';
+import { Col, Alert, Row } from 'react-bootstrap';
+import PropTypes from 'prop-types';
+
 import ProductsTable from './ProductsTable';
 import Filters from './Filters';
-import { Col, Alert, Row } from 'react-bootstrap';
 import Loader from './Loader/Loader';
 import Paginator from './Paginator';
 
@@ -17,7 +20,7 @@ const SearchResult = (props) => {
     setPageIndex,
     pageIndex,
     loading,
-    error
+    error,
   } = props;
 
   if (loading) {
@@ -38,7 +41,7 @@ const SearchResult = (props) => {
     );
   }
 
-  if (products.length === 0 ) {
+  if (products.length === 0) {
     return (
       <Row>
         <Col>
@@ -49,7 +52,7 @@ const SearchResult = (props) => {
       </Row>
     );
   }
-  
+
   return (
     <>
       <Row>
@@ -75,6 +78,21 @@ const SearchResult = (props) => {
       </Row>
     </>
   );
-}
+};
+
+SearchResult.propTypes = {
+  brands: PropTypes.arrayOf(PropTypes.string).isRequired,
+  selectedBrand: PropTypes.string.isRequired,
+  handleOnSelectBrand: PropTypes.func.isRequired,
+  products: PropTypes.arrayOf(PropTypes.object).isRequired,
+  filteredProducts: PropTypes.arrayOf(PropTypes.object).isRequired,
+  setFilteredProducts: PropTypes.func.isRequired,
+  productType: PropTypes.string.isRequired,
+  numberOfPages: PropTypes.number.isRequired,
+  setPageIndex: PropTypes.func.isRequired,
+  pageIndex: PropTypes.number.isRequired,
+  loading: PropTypes.bool.isRequired,
+  error: PropTypes.bool.isRequired,
+};
 
 export default SearchResult;
